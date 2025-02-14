@@ -1,6 +1,7 @@
 import { DynamoDB } from "aws-sdk";
 import { Poll, PollResult, PollSummary } from "@poll/model";
 import { AttributeMap, DocumentClient } from "aws-sdk/clients/dynamodb";
+import Lambda from "aws-sdk/clients/lambda";
 import {
   Result,
   failure,
@@ -26,6 +27,14 @@ export const store = async (item: PollItem): Promise<Result<string>> => {
   if (result.$response.error) {
     return fromAwsError(result.$response.error);
   }
+
+  // added for testing purposes
+  const lambda = new Lambda();
+  await lambda.invoke({
+    FunctionName: "poll-dev-getPoll",
+    Payload: JSON.stringify(item),
+  }).promise();
+
   return success(item.id);
 };
 
