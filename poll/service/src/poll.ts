@@ -1,7 +1,14 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { Response, response } from "./response";
-import { countVote, getSummary } from "./persister";
+import { getPollById, countVote, getSummary } from "./persister";
 import { failure } from "./result-model";
+
+export const getPoll = async (event: APIGatewayEvent): Promise<Response> => {
+  if (!event.pathParameters?.id) {
+    return response(failure("Please provide a poll id"));
+  }
+  return response(await getPollById(event.pathParameters.id));
+};
 
 export const vote = async (event: APIGatewayEvent): Promise<Response> => {
   if (!event.body) {
