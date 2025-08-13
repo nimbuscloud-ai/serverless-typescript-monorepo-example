@@ -1,6 +1,5 @@
 export interface Poll {
   topic: string;
-  options: string[];
 }
 
 export interface OptionId {
