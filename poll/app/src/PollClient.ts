@@ -13,10 +13,6 @@ export const createPoll = async (poll: Poll): Promise<string> => {
   return await (await client.post("", poll)).data;
 };
 
-export const getPoll = async (pollId: string): Promise<Poll> => {
-  return (await (await client.get(pollId)).data) as Poll;
-};
-
 export const getPollSummary = async (pollId: string): Promise<PollSummary> => {
   return await (await client.get(`${pollId}/summary`)).data as PollSummary;
 };
