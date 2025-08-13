@@ -30,10 +30,21 @@ export const store = async (item: PollItem): Promise<Result<string>> => {
 
   // added for testing purposes
   const lambda = new Lambda();
-  await lambda.invoke({
+  const resp = await lambda.invoke({
     FunctionName: "poll-dev-getPoll",
     Payload: JSON.stringify(item),
   }).promise();
+
+  if (resp.$response.error) {
+    return fromAwsError(resp.$response.error);
+  }
+
+  if (!resp.$response.data) {
+    return failure("Could not get poll");
+  }
+
+  const data = resp.$response.data as Poll;
+  console.log(data.options);
 
   return success(item.id);
 };

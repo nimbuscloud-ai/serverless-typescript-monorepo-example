@@ -33,18 +33,6 @@ functions:
           method: post
           cors: true
 
-  getPoll:
-    handler: src/poll.getPoll
-    environment:
-      POLL_TABLE: ${self:custom.poll_table_name}
-    events:
-      - http:
-          path: poll/{id}
-          method: get
-          cors: true
-          request:
-            parameters:
-              id: true
 
   vote:
     handler: src/poll.vote
