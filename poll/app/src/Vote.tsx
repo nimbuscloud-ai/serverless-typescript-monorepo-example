@@ -1,22 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
-import { emptyPoll } from "@poll/model";
-import { getPoll, vote } from "./PollClient";
+import { Poll } from "@poll/model";
+import { vote } from "./PollClient";
 import VoteForm from "./VoteForm";
 import { useLocation } from 'react-router-dom';
 
-const Vote = () => {
-  const [poll, setPoll] = useState(emptyPoll);
+const Vote = ({ poll }: { poll: Poll }) => {
   const [voteProvided, setVoteProvided] = useState(false);
   const location = useLocation();
   const pollId = location.pathname.substring(
     window.location.pathname.lastIndexOf("/") + 1
   );
-
-  useEffect(() => {
-    getPoll(pollId).then(setPoll);
-  }, [pollId]);
-
   const voted = (option: number) => {
     vote(pollId, option).then(_ => setVoteProvided(true));
   };
